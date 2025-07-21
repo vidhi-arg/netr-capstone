@@ -5,7 +5,7 @@ import requests
 # ---- PAGE SETUP ----
 
 st.set_page_config(page_title="NETR - Networked Evaluator of Threat Rhetoric", layout="centered")
-st.title("🕊️ NETR")
+st.title(" NETR")
 st.subheader("Networked Evaluator of Threat Rhetoric")
 
 st.markdown(
@@ -25,20 +25,20 @@ with st.sidebar:
 
 # ---- INPUT AREA ----
 
-input_text = st.text_area("🔍 Paste the message or speech segment below:", height=200)
+input_text = st.text_area(" Paste the message or speech segment below:", height=200)
 
 context = st.selectbox(
-    "📂 Context Type:",
+    " Context Type:",
     options=["Select", "Political", "Extremist", "Organized Crime"]
 )
 
-analyze_button = st.button("🔎 Analyze")
+analyze_button = st.button(" Analyze")
 
 # ---- OPENROUTER CONFIG ----
 
 api_key = os.getenv("OPENROUTER_API_KEY") or st.secrets.get("OPENROUTER_API_KEY", "")
 api_url = "https://openrouter.ai/api/v1/chat/completions"
-model = "openai/gpt-3.5-turbo"  # ✅ safer fallback for wide support
+model = "openai/gpt-3.5-turbo" 
 
 headers = {
     "Authorization": f"Bearer {api_key}",
@@ -56,7 +56,7 @@ def get_threat_analysis(prompt):
     if response.status_code == 200:
         return response.json()['choices'][0]['message']['content']
     else:
-        return f"⚠️ Error: {response.status_code} - {response.text}"
+        return f" Error: {response.status_code} - {response.text}"
 
 # ---- PROMPT BUILDER ----
 
@@ -84,9 +84,9 @@ Threat Ratings:
 - Manipulation: Z/10
 - Call to Action: A/10
 
-💥 Chaos Score: XX/100
+ Chaos Score: XX/100
 
-🛡️ Counter-strategy:
+ Counter-strategy:
 [your answer here]
 """
 
@@ -104,7 +104,7 @@ if analyze_button:
             prompt = build_prompt(input_text, context)
             result = get_threat_analysis(prompt)
             st.markdown("---")
-            st.markdown("### 📊 NETR Threat Analysis")
+            st.markdown("###  NETR Threat Analysis")
             st.markdown(result)
             st.markdown("---")
             st.success("Analysis complete.")
