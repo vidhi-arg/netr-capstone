@@ -2,7 +2,7 @@ import streamlit as st
 import os
 import requests
 
-# ---- SETUP ----
+# ---- PAGE SETUP ----
 
 st.set_page_config(page_title="NETR - Networked Evaluator of Threat Rhetoric", layout="centered")
 st.title("🕊️ NETR")
@@ -17,13 +17,13 @@ with st.sidebar:
     st.header("How to Use")
     st.markdown(
         "- Paste a message, transcript, or scenario.\n"
-        "- Choose a context: Political, Extremist, or Crime.\n"
+        "- Choose a context: Political, Extremist, or Organized Crime.\n"
         "- Click **Analyze** to simulate threat evaluation."
     )
     st.markdown("---")
     st.markdown("**Built by:** Vidhi Agarwal 🇮🇳  \n**Powered by:** OpenRouter")
 
-# ---- INPUT ----
+# ---- INPUT AREA ----
 
 input_text = st.text_area("🔍 Paste the message or speech segment below:", height=200)
 
@@ -38,7 +38,7 @@ analyze_button = st.button("🔎 Analyze")
 
 api_key = os.getenv("OPENROUTER_API_KEY") or st.secrets.get("OPENROUTER_API_KEY", "")
 api_url = "https://openrouter.ai/api/v1/chat/completions"
-model = "openrouter/gpt-4"  # you can switch to claude-3, mistral, etc.
+model = "openai/gpt-3.5-turbo"  # ✅ safer fallback for wide support
 
 headers = {
     "Authorization": f"Bearer {api_key}",
@@ -58,7 +58,7 @@ def get_threat_analysis(prompt):
     else:
         return f"⚠️ Error: {response.status_code} - {response.text}"
 
-# ---- ANALYSIS LOGIC ----
+# ---- PROMPT BUILDER ----
 
 def build_prompt(text, context_type):
     return f"""
@@ -90,7 +90,7 @@ Threat Ratings:
 [your answer here]
 """
 
-# ---- OUTPUT ----
+# ---- APP LOGIC ----
 
 if analyze_button:
     if not input_text.strip():
@@ -108,4 +108,5 @@ if analyze_button:
             st.markdown(result)
             st.markdown("---")
             st.success("Analysis complete.")
+
 
